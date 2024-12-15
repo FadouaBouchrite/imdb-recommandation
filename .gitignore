@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/imdb-front1/node_modules
+/front-imdb/node_modules
 /.pnp
 .pnp.js
 
