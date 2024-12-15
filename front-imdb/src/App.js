@@ -36,11 +36,45 @@ function App() {
         </div>
 
         {result && (
-          <div style={styles.result}>
-            <h2 style={styles.subHeader}>Analysis Result:</h2>
-            <p style={styles.resultText}><strong>Sentiment:</strong> {result.sentiment}</p>
-          </div>
-        )}
+  <div style={styles.result}>
+    <h2 style={styles.subHeader}>Analysis Result:</h2>
+    {(() => {
+      let parsedContent;
+      try {
+        parsedContent = typeof result.sentiment_analysis.message.content === "string"
+          ? JSON.parse(result.sentiment_analysis.message.content)
+          : result.sentiment_analysis.message.content;
+      } catch {
+        parsedContent = null;
+      }
+
+      if (parsedContent) {
+        return (
+          <>
+            <p style={styles.resultText}><strong>Sentiment:</strong> {parsedContent.sentiment}</p>
+            <p style={styles.resultText}><strong>Score:</strong> {parsedContent.sentiment_score}</p>
+            <p style={styles.resultText}><strong>Genres:</strong> {parsedContent.genres.join(", ")}</p>
+            <p style={styles.resultText}><strong>Emotions:</strong> {parsedContent.emotions.join(", ")}</p>
+          </>
+        );
+      } else {
+        return <p style={styles.error}>Failed to parse sentiment analysis content.</p>;
+      }
+    })()}
+
+    <h3 style={styles.subHeader}>Recommendations:</h3>
+    <ul>
+      {result.recommendations.map((rec, index) => (
+        <li key={index} style={styles.resultText}>
+        <a href={`https://www.imdb.com/title/${rec}`} target="_blank" rel="noopener noreferrer">
+          {rec}
+        </a>
+      </li>
+      
+      ))}
+    </ul>
+  </div>
+)}
 
         {error && (
           <div style={styles.error}>
