@@ -2,6 +2,7 @@
 
 # dependencies
 /front-imdb/node_modules
+/back-imdb/env
 /.pnp
 .pnp.js
 
