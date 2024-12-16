@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>imdb-recommandation documentation &#8212; imdb-recommandation  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="imdb-recommandation-documentation">
+<h1>imdb-recommandation documentation<a class="headerlink" href="#imdb-recommandation-documentation" title="Link to this heading">¶</a></h1>
+<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
+documentation for details.</p>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="py function" id="module-back">
+<dt class="sig sig-object py" id="back.analyze_comment">
+<span class="sig-prename descclassname"><span class="pre">back.</span></span><span class="sig-name descname"><span class="pre">analyze_comment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#back.analyze_comment" title="Link to this definition">¶</a></dt>
+<dd><p>Analyze a film comment to provide sentiment analysis, recommendations, and validation.</p>
+<p>This route performs the following tasks:
+1. Accepts a film comment.
+2. Converts the comment to a vector representation.
+3. Fetches sentiment analysis for the comment.
+4. Recommends films based on the sentiment and comment vector.
+5. Validates the recommendations against the user’s comment.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>dict: A JSON object containing recommendations, sentiment analysis, and validation result.</p>
+</dd>
+<dt>Raises:</dt><dd><p>400: If the comment is missing in the request.
+500: If any error occurs during the process.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="back.fetch_sentiment_analysis">
+<span class="sig-prename descclassname"><span class="pre">back.</span></span><span class="sig-name descname"><span class="pre">fetch_sentiment_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#back.fetch_sentiment_analysis" title="Link to this definition">¶</a></dt>
+<dd><p>Fetch sentiment analysis for a given comment using an external sentiment API.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>comment (str): The film comment to be analyzed.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: The sentiment analysis result in JSON format.</p>
+</dd>
+<dt>Raises:</dt><dd><p>RuntimeError: If the sentiment API request fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="back.get_text_vector">
+<span class="sig-prename descclassname"><span class="pre">back.</span></span><span class="sig-name descname"><span class="pre">get_text_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#back.get_text_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Convert a comment to a vector representation using the BERT model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>comment (str): The comment text to be converted.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: The vector representation of the comment.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If the provided comment is empty.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="back.recommend_film">
+<span class="sig-prename descclassname"><span class="pre">back.</span></span><span class="sig-name descname"><span class="pre">recommend_film</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sentiment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#back.recommend_film" title="Link to this definition">¶</a></dt>
+<dd><p>Recommend films based on the vector similarity in Qdrant and sentiment analysis.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>comment_vector (list): The vector representation of the comment.
+sentiment (str): The sentiment of the comment (“positive” or “negative”).
+top_k (int): The number of top films to return.
+top_n (int): The number of films to retrieve from Qdrant.</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: A list of recommended film IDs.</p>
+</dd>
+<dt>Raises:</dt><dd><p>RuntimeError: If an error occurs while retrieving recommendations from Qdrant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="back.validate_recommendations">
+<span class="sig-prename descclassname"><span class="pre">back.</span></span><span class="sig-name descname"><span class="pre">validate_recommendations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recommendations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#back.validate_recommendations" title="Link to this definition">¶</a></dt>
+<dd><p>Validate whether the recommended films align with the sentiment and intent of the user’s comment.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>comment (str): The user’s comment about the film.
+recommendations (list): The list of recommended films to validate.</p>
+</dd>
+<dt>Returns:</dt><dd><p>dict: The validation result in JSON format.</p>
+</dd>
+<dt>Raises:</dt><dd><p>RuntimeError: If the validation request fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">imdb-recommandation</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, serrakhi.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
